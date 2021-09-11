@@ -1,0 +1,10 @@
+Maggie,3,165
+Herman,7,126
+Betsy,9,122
+Oreo,6,104
+Moo Moo,3,151
+Milkshake,2,117
+Millie,5,84
+Lola,2,131
+Florence,2,101
+Henrietta,9,106

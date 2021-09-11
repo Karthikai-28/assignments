@@ -1,0 +1,8 @@
+Miss Moo-dy,3,172
+Milkshake,4,102
+Lotus,10,149
+Miss Bella,2,103
+Horns,9,81
+Betsy,5,97
+Rose,3,155
+Dottie,6,91
