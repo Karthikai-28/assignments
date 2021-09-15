@@ -1,0 +1,14 @@
+1	p r r r r r r 
+2	d r r r r r r 
+3	d p r r r r r 
+4	d d r r r r r 
+5	d d p r r r r 
+6	d d d r r r r 
+7	d d d p r r r 
+8	d d d d r r r 
+9	d d d d p r r 
+10	d d d d d r r 
+11	d d d d d p r 
+12	d d d d d d r 
+13	d d d d d d p 
+14	d d d d d d d 
