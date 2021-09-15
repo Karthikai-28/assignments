@@ -12,7 +12,7 @@ from numpy import radians as rad
 
 #  *************    Read TMY3 Data file from given station name and print information   ************
 
-fname = '724460TYA.CSV'
+fname = '724460tya.csv'
 station, GMT_offset, latitude, longitude, altitude = np.genfromtxt(fname, max_rows=1, delimiter=",", usecols=(0, 3, 4, 5, 6))
 location_name, location_state = np.genfromtxt(fname, max_rows=1, delimiter=",", usecols=(1,2), dtype= np.str)
 ETR, GHI, DNI, DHI, ambient_temperature = np.genfromtxt(fname, skip_header=2, delimiter=",", usecols=(2,4,7, 10,31), unpack=True)
