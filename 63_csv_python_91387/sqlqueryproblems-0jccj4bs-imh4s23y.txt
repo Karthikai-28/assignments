@@ -1,0 +1,63 @@
+Practice writing SQL queries
+-----------------------------
+
+For this question, we will consider the following tables about
+people, grades, and courses. Your task is to express each
+of the given queries in SQL. Example data are provided in these
+tables for your convenience but note that they are only example data. 
+Your queries must work for all potential data residing in the given 
+tables, not just those illustrated here.
+
+People (id, name, age, address)
+---------------------------------------------------
+p1  | Tom Martin| 24 | 11, Integer Avenue, Fractions, MA
+p2  | Al Smith  | 33 | 26, Main Street, Noman's Land, PA
+p3  | Kim Burton| 40 | 45, Elm Street, Blacksburg, VA
+---------------------------------------------------
+
+Courses (cid, name, department)
+---------------------------------------------------------
+c1 | Systematic Torture | MATH
+c2 | Pretty Painful     | CS
+c3 | Not so Bad         | MATH
+c4 | Big Data 		   | CS
+---------------------------------------------------------
+
+Grades (pid, cid, grade)
+---------------------------------------------------
+p1  |  c1    	| 3.5 
+p2  |  c3		| 2.5
+p3  |  c2       | 4.0
+p3  |  c4       | 3.85
+---------------------------------------------------
+
+1. Find the names of courses taken by Tom Martin.
+
+2. Print person name, course name, and grade in a convenient format.
+
+3. Print person names and their grades in MATH courses.
+
+4. Find the names of courses that people from VA have taken.
+
+5. Find the names of people who received a grade of 3 or better in some
+   course. List the namesmes of these people alongside the course names.
+
+6. Find the names of people who received a grade of 3.5 or better in at
+   least two courses.
+
+7. Find the names of people who received a grade of 3.5 or better in at least
+   three courses.
+
+8. Find the names of people who received a grade of 3.5 or better in exactly
+   two courses.
+
+9. What is the name of the person who received the highest grade in the "Big Data" course?
+
+10. This question builds on the previous question; what is the name of the person
+   who received the second highest grade in the "Big Data" course? 
+
+11. Find the names of people who received a grade of 3.5 or better in every course (given in
+   the Courses table).
+
+12. Find the names of people who received a grade of 3.5 or better in every course they have taken.
+
