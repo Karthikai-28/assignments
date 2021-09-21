@@ -1,0 +1,131 @@
+#!/usr/bin/python3.4
+#Satellite Program
+#Authors: Ryan Baker, Zane Zakraisek
+import sys
+import math
+
+data_file = './data.dat' 
+
+class Satellite:
+  def __init__(self, name):
+    self.name = name
+
+  def position(self, t):
+    h     = self.altitude
+    p     = self.periodicity
+    phase = self.phase
+    u1    = self.u1
+    u2    = self.u2
+    u3    = self.u3
+    v1    = self.v1
+    v2    = self.v2
+    v3    = self.v3
+
+    x = (R+h)*(u1*math.cos((2*pi*t/p)+phase) + v1*math.sin((2*pi*t/p)+phase))
+    y = (R+h)*(u2*math.cos((2*pi*t/p)+phase) + v2*math.sin((2*pi*t/p)+phase))
+    z = (R+h)*(u3*math.cos((2*pi*t/p)+phase) + v3*math.sin((2*pi*t/p)+phase))
+    return (x,y,z)
+
+  def is_above_horizon(self, xv,yv,zv, t):
+    (xs,ys,zs) = self.position(t)
+
+    xs_1 = xs-xv
+    ys_1 = ys-yv
+    zs_1 = zs-zv
+
+    return (xv*xs_1)+(yv*ys_1)+(zv*zs_1) > 0
+
+##########Helper Functions##########
+def geo_to_cart(tv, lat_d, lat_m, lat_s, NS, lon_d, lon_m, lon_s, EW, h):
+  psi = NS*deg_to_rad(lat_d, lat_m, lat_s)
+  lam = EW*deg_to_rad(lon_d, lon_m, lon_s) + 2*pi*tv/s
+  r   = (R+h)
+
+  x = r * math.cos(psi) * math.cos(lam)
+  y = r * math.cos(psi) * math.sin(lam)
+  z = r * math.sin(psi)
+
+  return (x,y,z)
+
+#Converts degrees to radians
+def deg_to_rad(d, m, s):
+  tmp = d + m/60 + s/3600
+  return tmp*math.pi/180
+####################################
+
+satellites = {}
+data_file = open(data_file, 'r')
+for line in data_file:
+  line_splt = line.replace(',', '').split()
+
+  component = line_splt[2]
+  value     = float(line_splt[0])
+  if component == 'pi':
+    pi = float(value)
+  elif component == 'c':
+    c  = float(value)
+  elif component == 'R':
+    R  = float(value)
+  elif component == 's':
+    s  = float(value)
+  else:
+    sat = int(line_splt[5])
+    if sat not in satellites:
+      new_sat = Satellite(sat)
+      satellites[sat] = new_sat
+    
+    if component == 'v1':
+      satellites[sat].v1 = value;
+    elif component == 'v2':
+      satellites[sat].v2 = value;
+    elif component == 'v3':
+      satellites[sat].v3 = value;
+    elif component == 'u1':
+      satellites[sat].u1 = value;
+    elif component == 'u2':
+      satellites[sat].u2 = value;
+    elif component == 'u3':
+      satellites[sat].u3 = value;
+    elif component == 'periodicity':
+      satellites[sat].periodicity = value
+    elif component == 'altitude':
+      satellites[sat].altitude = value
+    elif component == 'phase':
+      satellites[sat].phase = value
+
+#Parse the piped input from vehicle
+for line in sys.stdin:
+  line_split = line.split()
+
+  #Vehical location at time tv
+  tv    = float(line_split[0])
+  lat_d = float(line_split[1])
+  lat_m = float(line_split[2])
+  lat_s = float(line_split[3])
+  NS    = int(line_split[4])
+  lon_d = float(line_split[5])
+  lon_m = float(line_split[6])
+  lon_s = float(line_split[7])
+  EW    = int(line_split[8])
+  h     = float(line_split[9])
+
+  #Compute the position of the vehicle in cartesian coordinates at time tv
+  (xv,yv,zv) = geo_to_cart(tv, lat_d, lat_m, lat_s, NS, lon_d, lon_m, lon_s, EW, h)
+
+  #Compute the satellites above the horizon at time tv
+  for sat_index in satellites:
+    sat = satellites[sat_index]
+    if not sat.is_above_horizon(xv,yv,zv, tv):
+      continue
+   
+    #Compute ts and the satellites position at ts
+    tk      = tv
+    tk_prev = -1
+    while tk - tk_prev:
+      (xs,ys,zs) = sat.position(tk)
+      distance   = ( (xs-xv)**2 + (ys-yv)**2 + (zs-zv)**2 )**(.5)
+      tk_prev    = tk
+      tk         = tv - distance/c
+    
+    ret = str(sat_index) + ' ' + str(tk) + ' ' + str(xs) + ' ' +  str(ys) + ' ' + str(zs)
+    print(ret)

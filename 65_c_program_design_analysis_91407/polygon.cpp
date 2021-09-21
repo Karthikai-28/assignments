@@ -5,7 +5,9 @@ double findArea(double points[][2], long rows);
 using namespace std;
 
 int main(){	
-	double arrayOfVertices[][2] = { {3,4}, {5,11}, {12,8}, {9,5},{5,6}}; 
+	int values;
+	cin >> values;
+	double arrayOfVertices[][2] = {values}; 
 
 	cout<<"The Area of the given Polygon = "<<findArea(arrayOfVertices, sizeof(arrayOfVertices)/sizeof(*arrayOfVertices))<<endl;      
 	return 0;
