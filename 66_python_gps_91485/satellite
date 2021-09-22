@@ -1,6 +1,5 @@
 #!/usr/bin/python3.4
 #Satellite Program
-#Authors: Ryan Baker, Zane Zakraisek
 import sys
 import math
 
