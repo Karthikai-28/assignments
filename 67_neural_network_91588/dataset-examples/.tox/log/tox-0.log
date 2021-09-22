@@ -1,0 +1,80 @@
+actionid: tox
+msg: packaging
+cmdargs: ['/usr/bin/python3', local('/home/kai/assignments/67_neural_network_91588/dataset-examples/setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('/home/kai/assignments/67_neural_network_91588/dataset-examples/.tox/dist')]
+env: None
+
+running sdist
+running egg_info
+writing dataset_examples.egg-info/PKG-INFO
+writing dependency_links to dataset_examples.egg-info/dependency_links.txt
+writing requirements to dataset_examples.egg-info/requires.txt
+writing top-level names to dataset_examples.egg-info/top_level.txt
+reading manifest file 'dataset_examples.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'dataset_examples.egg-info/SOURCES.txt'
+running check
+warning: check: missing meta-data: if 'author' supplied, 'author_email' must be supplied too
+
+creating dataset-examples-0.0.0
+creating dataset-examples-0.0.0/category_predictor
+creating dataset-examples-0.0.0/dataset_examples.egg-info
+creating dataset-examples-0.0.0/positive_category_words
+creating dataset-examples-0.0.0/review_autopilot
+creating dataset-examples-0.0.0/test
+copying files to dataset-examples-0.0.0...
+copying LICENSE.txt -> dataset-examples-0.0.0
+copying README.md -> dataset-examples-0.0.0
+copying setup.py -> dataset-examples-0.0.0
+copying category_predictor/__init__.py -> dataset-examples-0.0.0/category_predictor
+copying category_predictor/category_predictor.py -> dataset-examples-0.0.0/category_predictor
+copying category_predictor/predict.py -> dataset-examples-0.0.0/category_predictor
+copying dataset_examples.egg-info/PKG-INFO -> dataset-examples-0.0.0/dataset_examples.egg-info
+copying dataset_examples.egg-info/SOURCES.txt -> dataset-examples-0.0.0/dataset_examples.egg-info
+copying dataset_examples.egg-info/dependency_links.txt -> dataset-examples-0.0.0/dataset_examples.egg-info
+copying dataset_examples.egg-info/requires.txt -> dataset-examples-0.0.0/dataset_examples.egg-info
+copying dataset_examples.egg-info/top_level.txt -> dataset-examples-0.0.0/dataset_examples.egg-info
+copying positive_category_words/__init__.py -> dataset-examples-0.0.0/positive_category_words
+copying positive_category_words/simple_global_positivity.py -> dataset-examples-0.0.0/positive_category_words
+copying positive_category_words/weighted_category_positivity.py -> dataset-examples-0.0.0/positive_category_words
+copying review_autopilot/__init__.py -> dataset-examples-0.0.0/review_autopilot
+copying review_autopilot/autopilot.py -> dataset-examples-0.0.0/review_autopilot
+copying review_autopilot/generate.py -> dataset-examples-0.0.0/review_autopilot
+copying test/__init__.py -> dataset-examples-0.0.0/test
+copying test/test_autopilot.py -> dataset-examples-0.0.0/test
+copying test/test_category_predictor.py -> dataset-examples-0.0.0/test
+copying test/test_json_to_csv_converter.py -> dataset-examples-0.0.0/test
+copying test/test_weighted_positivity.py -> dataset-examples-0.0.0/test
+Writing dataset-examples-0.0.0/setup.cfg
+creating .tox/dist
+creating '.tox/dist/dataset-examples-0.0.0.zip' and adding 'dataset-examples-0.0.0' to it
+adding 'dataset-examples-0.0.0'
+adding 'dataset-examples-0.0.0/category_predictor'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info'
+adding 'dataset-examples-0.0.0/review_autopilot'
+adding 'dataset-examples-0.0.0/positive_category_words'
+adding 'dataset-examples-0.0.0/test'
+adding 'dataset-examples-0.0.0/setup.py'
+adding 'dataset-examples-0.0.0/LICENSE.txt'
+adding 'dataset-examples-0.0.0/PKG-INFO'
+adding 'dataset-examples-0.0.0/setup.cfg'
+adding 'dataset-examples-0.0.0/README.md'
+adding 'dataset-examples-0.0.0/category_predictor/__init__.py'
+adding 'dataset-examples-0.0.0/category_predictor/predict.py'
+adding 'dataset-examples-0.0.0/category_predictor/category_predictor.py'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info/dependency_links.txt'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info/requires.txt'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info/SOURCES.txt'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info/PKG-INFO'
+adding 'dataset-examples-0.0.0/dataset_examples.egg-info/top_level.txt'
+adding 'dataset-examples-0.0.0/review_autopilot/__init__.py'
+adding 'dataset-examples-0.0.0/review_autopilot/autopilot.py'
+adding 'dataset-examples-0.0.0/review_autopilot/generate.py'
+adding 'dataset-examples-0.0.0/positive_category_words/__init__.py'
+adding 'dataset-examples-0.0.0/positive_category_words/weighted_category_positivity.py'
+adding 'dataset-examples-0.0.0/positive_category_words/simple_global_positivity.py'
+adding 'dataset-examples-0.0.0/test/test_category_predictor.py'
+adding 'dataset-examples-0.0.0/test/test_weighted_positivity.py'
+adding 'dataset-examples-0.0.0/test/__init__.py'
+adding 'dataset-examples-0.0.0/test/test_json_to_csv_converter.py'
+adding 'dataset-examples-0.0.0/test/test_autopilot.py'
+removing 'dataset-examples-0.0.0' (and everything under it)

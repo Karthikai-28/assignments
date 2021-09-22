@@ -1,0 +1,2 @@
+class TestifyError(Exception):
+    pass
