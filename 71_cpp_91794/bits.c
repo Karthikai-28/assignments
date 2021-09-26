@@ -116,8 +116,13 @@ REMINDER: Use the ./btest program to check your functions
  *   Rating: 1
  */
 int bitOr(int x, int y) {
-  return 2;
+  int z = 0; //Initialize an int filled with '1's as bits to use as a baseline.
+  z = ~z;
+  z = z & ~x; //Remove all the '1's in z-baseline at the same place as the '1's in x
+  z = z & ~y; //Remove all the '1's in z-baseline at the same place as the '1's in y
+  return ~z; //Invert the z-baseline to show all bits that were popped out by either x or y having a '1' at that place.
 }
+
 /* 
  * bitAnd - x&y using only ~ and | 
  *   Example: bitAnd(6, 5) = 4
@@ -126,7 +131,11 @@ int bitOr(int x, int y) {
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
-  return 2;
+  int result = 0; //Initalize an empty int filled with '0's as baseline
+  result = result;
+  result = result | ~x; //Create a '1' in result at the place of any '0's in x
+  result = result | ~y; //Create a '1' in result at the place of any '0's in y
+  return ~result; //Invert the result to show the places where the '1's in x and y didn't pop out in result (or in other words where there were two '1's at the same place
 }
 /* 
  * bitXor - x^y using only ~ and & 
@@ -136,7 +145,13 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int bitXor(int x, int y) {
-  return 2;
+  int z = 0; //Initialize an int filled with '1's as bits to use as a baseline.
+  z = ~z;
+  z = z & ~x; //Remove all the '1's in z-baseline at the same place as the '1's in x
+  z = z & ~y; //Remove all the '1's in z-baseline at the same place as the '1's in y
+  z = ~z; //Reverse z to get the regular ORed result
+  z = z & ~(x&y); //Remove any '1's where there are two '1's at the sames place in both x and y
+  return z; //Invert the z-baseline to show all bits tfrom the previous steps
 }
 /* 
  * isNotEqual - return 0 if x == y, and 1 otherwise 
@@ -146,7 +161,7 @@ int bitXor(int x, int y) {
  *   Rating: 2
  */
 int isNotEqual(int x, int y) {
-  return 2;
+  return !!(x^y);
 }
 /* 
  * copyLSB - set all bits of result to least significant bit of x
@@ -156,7 +171,8 @@ int isNotEqual(int x, int y) {
  *   Rating: 2
  */
 int copyLSB(int x) {
-  return 2;
+  int mask = 1;
+  return ((x&mask)<<31)>>31;
 }
 /* 
  * specialBits - return bit pattern 0xffca3fff
@@ -165,7 +181,9 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int specialBits(void) {
-    return 2;
+    int result = 0;
+    result |=  53<<16|12<<12;
+    return ~result;
 }
 /* 
  * conditional - same as x ? y : z 
@@ -175,8 +193,7 @@ int specialBits(void) {
  *   Rating: 4
  */
 int conditional(int x, int y, int z) {
-  return 2;
-}
+  return (((!!x)<<31)>>31 & y)|(((!x)<<31)>>31 & z);
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
  *   Examples: bitParity(5) = 0, bitParity(7) = 1
@@ -185,7 +202,12 @@ int conditional(int x, int y, int z) {
  *   Rating: 4
  */
 int bitParity(int x) {
-  return 2;
+  x = x ^ (x>>16);
+  x = x ^ (x>>8);
+  x = x ^ (x>>4);
+  x = x ^ (x>>2);
+  x = x ^ (x>>1);
+  return (x & 1);
 }
 /*******************************************
  * INTEGERS (8 puzzles, 22 points total)   *
@@ -197,7 +219,7 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-  return 2;
+  return ~(0); //Start of with an int of all 0 bits, then inverse to give -1
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -206,7 +228,7 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-  return 2;
+  return ~(1<<31); //Set MSB bit to 1, the rest to zero, and then invert to get TMax
 }
 /* 
  * negate - return -x 
@@ -216,7 +238,7 @@ int tmax(void) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  return (~x)+1; //Does a twos-complement swap by inverting the bits of target and adding one.
 }
 /* 
  * isNegative - return 1 if x < 0, return 0 otherwise 
@@ -226,7 +248,8 @@ int negate(int x) {
  *   Rating: 2
  */
 int isNegative(int x) {
-  return 2;
+  return (x>>31)&1; //Move MSB to the LSB and & it with 1 to wipe out the rest of the bits
+  //This makes it so that if MSB was 1 (Negative), the result is 1 and if it's 0 (Positive), then the result is 0 - both due to wiping out the rest of the bits
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -236,7 +259,9 @@ int isNegative(int x) {
  *   Rating: 4
  */
 int isPositive(int x) {
-  return 2;
+  return !(x>>31) ^ !x; //Move MSB to the LSB and & it with 1 to wipe out the rest of the bits
+  //This makes it so that if MSB was 1 (Negative), the result is 1 and if it's 0 (Positive), then the result is 0 - both due to wiping out the rest of the bits
+  //XOR by !x to deal with case when x = 0 yet needs to return 0
 }
 /* 
  * bang - Compute !x without using !
@@ -257,7 +282,7 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-  return 2;
+  return !((((x+y)^y)&((x+y)^x))>>31);
 }
 /* 
  * absVal - absolute value of x
@@ -268,7 +293,9 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int absVal(int x) {
-  return 2;
+  int result = ((~(x)&(x>>31&1)<<31>>31)+(x>>31&1)); //Deals with if number is negative - returns two's complement of it if so and 0 if number is positive by only matching number if MSB is 1
+  result |= (x&(~x>>31&1)<<31>>31); //Same logic as above, but matches if MSB is 0 and deals with positive
+  return result;
 }
 /*************************************************************
  * BONUS puzzles BELOW! be advised, some are quite difficult *
@@ -296,7 +323,41 @@ int byteSwap(int x, int n, int m) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return 2;
+  int result = 0;
+  result = result + ((x>>0)&1);
+  result = result + ((x>>1)&1);
+  result = result + ((x>>2)&1);
+  result = result + ((x>>3)&1);
+  result = result + ((x>>4)&1);
+  result = result + ((x>>5)&1);
+  result = result + ((x>>6)&1);
+  result = result + ((x>>7)&1);
+  result = result + ((x>>8)&1);
+  result = result + ((x>>9)&1);
+  result = result + ((x>>10)&1);
+  result = result + ((x>>11)&1);
+  result = result + ((x>>12)&1);
+  result = result + ((x>>13)&1);
+  result = result + ((x>>14)&1);
+  result = result + ((x>>15)&1);
+  result = result + ((x>>16)&1);
+  result = result + ((x>>17)&1);
+  result = result + ((x>>18)&1);
+  result = result + ((x>>19)&1);
+  result = result + ((x>>20)&1);
+  result = result + ((x>>21)&1);
+  result = result + ((x>>22)&1);
+  result = result + ((x>>23)&1);
+  result = result + ((x>>24)&1);
+  result = result + ((x>>25)&1);
+  result = result + ((x>>26)&1);
+  result = result + ((x>>27)&1);
+  result = result + ((x>>28)&1);
+  result = result + ((x>>29)&1);
+  result = result + ((x>>30)&1);
+  result = result + ((x>>31)&1);
+
+  return result;
 }
 /* 
  * logicalShift - shift x to the right by n, using a logical shift
@@ -307,5 +368,5 @@ int bitCount(int x) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  return 2;
+  return (x >> n) & ~(((1&(!!n))<<31)>>(n)<<1);
 }
