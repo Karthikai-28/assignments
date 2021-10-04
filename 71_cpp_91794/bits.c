@@ -116,11 +116,7 @@ REMINDER: Use the ./btest program to check your functions
  *   Rating: 1
  */
 int bitOr(int x, int y) {
-  int z = 0; //Initialize an int filled with '1's as bits to use as a baseline.
-  z = ~z;
-  z = z & ~x; //Remove all the '1's in z-baseline at the same place as the '1's in x
-  z = z & ~y; //Remove all the '1's in z-baseline at the same place as the '1's in y
-  return ~z; //Invert the z-baseline to show all bits that were popped out by either x or y having a '1' at that place.
+  return ~(~x & ~y);
 }
 
 /* 
@@ -131,11 +127,7 @@ int bitOr(int x, int y) {
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
-  int result = 0; //Initalize an empty int filled with '0's as baseline
-  result = result;
-  result = result | ~x; //Create a '1' in result at the place of any '0's in x
-  result = result | ~y; //Create a '1' in result at the place of any '0's in y
-  return ~result; //Invert the result to show the places where the '1's in x and y didn't pop out in result (or in other words where there were two '1's at the same place
+return ~(~x | ~y);
 }
 /* 
  * bitXor - x^y using only ~ and & 
@@ -145,13 +137,7 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int bitXor(int x, int y) {
-  int z = 0; //Initialize an int filled with '1's as bits to use as a baseline.
-  z = ~z;
-  z = z & ~x; //Remove all the '1's in z-baseline at the same place as the '1's in x
-  z = z & ~y; //Remove all the '1's in z-baseline at the same place as the '1's in y
-  z = ~z; //Reverse z to get the regular ORed result
-  z = z & ~(x&y); //Remove any '1's where there are two '1's at the sames place in both x and y
-  return z; //Invert the z-baseline to show all bits tfrom the previous steps
+  return ~(~(~x & y) & ~(x & ~y)); 
 }
 /* 
  * isNotEqual - return 0 if x == y, and 1 otherwise 
@@ -161,7 +147,7 @@ int bitXor(int x, int y) {
  *   Rating: 2
  */
 int isNotEqual(int x, int y) {
-  return !!(x^y);
+  return !!(~(x ^ ~y));
 }
 /* 
  * copyLSB - set all bits of result to least significant bit of x
@@ -171,8 +157,7 @@ int isNotEqual(int x, int y) {
  *   Rating: 2
  */
 int copyLSB(int x) {
-  int mask = 1;
-  return ((x&mask)<<31)>>31;
+  return ~(x & 0x1) + 1;
 }
 /* 
  * specialBits - return bit pattern 0xffca3fff
@@ -181,9 +166,7 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int specialBits(void) {
-    int result = 0;
-    result |=  53<<16|12<<12;
-    return ~result;
+    return ~(215 << 14);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -193,7 +176,10 @@ int specialBits(void) {
  *   Rating: 4
  */
 int conditional(int x, int y, int z) {
-  return (((!!x)<<31)>>31 & y)|(((!x)<<31)>>31 & z);
+  x = !x;				// x is bang'd to make a 0 or a 1
+	x = ~x + 1;			// x is inverted to be 0xfffffffe or 0xffffffff, then add one to cause either overflow or make all 1's
+	return ((y & ~x) | (z & x)); 
+}
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
  *   Examples: bitParity(5) = 0, bitParity(7) = 1
@@ -202,12 +188,15 @@ int conditional(int x, int y, int z) {
  *   Rating: 4
  */
 int bitParity(int x) {
-  x = x ^ (x>>16);
-  x = x ^ (x>>8);
-  x = x ^ (x>>4);
-  x = x ^ (x>>2);
-  x = x ^ (x>>1);
-  return (x & 1);
+  x = x ^ (x << 16);  // odd_0 = odd   ^ even   
+	x = x ^ (x << 8);   // odd_1 = odd_0 ^ even
+	x = x ^ (x << 4);   // odd_2 = odd_1 ^ even
+	x = x ^ (x << 2);   // odd_3 = odd_2 ^ even
+	x = x ^ (x << 1);   // odd_4 = odd_3 ^ even
+
+	return !!(x >> 31); // (odd_4 >> 31) results in 0xFFFFFFFF or 0x00000000.
+		   	    // if 0x00000000, then even bits; if 0xFFFFFFFF, then odd bits.
+			    // double bang will convert to 0x0 even, 0x1 for odd
 }
 /*******************************************
  * INTEGERS (8 puzzles, 22 points total)   *
@@ -219,7 +208,7 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int minusOne(void) {
-  return ~(0); //Start of with an int of all 0 bits, then inverse to give -1
+   return ~(0x1) + 0x1; // negates to make -1.
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -228,7 +217,7 @@ int minusOne(void) {
  *   Rating: 1
  */
 int tmax(void) {
-  return ~(1<<31); //Set MSB bit to 1, the rest to zero, and then invert to get TMax
+  return ~(0x1 << 31); 
 }
 /* 
  * negate - return -x 
@@ -238,7 +227,7 @@ int tmax(void) {
  *   Rating: 2
  */
 int negate(int x) {
-  return (~x)+1; //Does a twos-complement swap by inverting the bits of target and adding one.
+  return ~(x) + 0x1; //twos complement gives the negative vr
 }
 /* 
  * isNegative - return 1 if x < 0, return 0 otherwise 
@@ -248,8 +237,7 @@ int negate(int x) {
  *   Rating: 2
  */
 int isNegative(int x) {
-  return (x>>31)&1; //Move MSB to the LSB and & it with 1 to wipe out the rest of the bits
-  //This makes it so that if MSB was 1 (Negative), the result is 1 and if it's 0 (Positive), then the result is 0 - both due to wiping out the rest of the bits
+  return !!((0x1 << 31) & x);
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -259,9 +247,7 @@ int isNegative(int x) {
  *   Rating: 4
  */
 int isPositive(int x) {
-  return !(x>>31) ^ !x; //Move MSB to the LSB and & it with 1 to wipe out the rest of the bits
-  //This makes it so that if MSB was 1 (Negative), the result is 1 and if it's 0 (Positive), then the result is 0 - both due to wiping out the rest of the bits
-  //XOR by !x to deal with case when x = 0 yet needs to return 0
+  return !!(((~x + 1) & ~x) & (0x1 << 31)); 
 }
 /* 
  * bang - Compute !x without using !
@@ -271,7 +257,7 @@ int isPositive(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+  return (~((x | (~x + 1)) >> 31) & 0x1);
 }
 /* 
  * addOK - Determine if can compute x+y without overflow
@@ -282,7 +268,46 @@ int bang(int x) {
  *   Rating: 4
  */
 int addOK(int x, int y) {
-  return !((((x+y)^y)&((x+y)^x))>>31);
+int msb, z; // msb created to mask x and y and validate if
+       		    // they are negative or positive; z is used to
+		    // store the result of x + y, and is checked
+		    // with msb to determine if the result is 
+		    // negative or positive.
+	
+	msb = 0x1 << 31; //mask
+	z = x + y;
+	z = z & msb; // result is 0x80000000 or 0x00000000
+
+	/*
+	 * (x & msb) and (y & msb) are used to check signs of x and y.
+	 * 
+	 * these values are XOR'd together to determine if both signs are
+	 * the same:
+	 * 
+	 * 0x80000000 ^ 0x80000000 = 0
+	 * 0x0 ^ 0x0 = 0
+	 *
+	 * if the value returns 1, we know it's ok to add,
+	 * because overflow does not occur on +, - or vise versa.
+	 * overflow only occurs when signs are the same, therefore 
+	 * receiving the value 0 is needed to determine the next check...
+	 *
+	 * if both x and y are the same sign, then we can assume (x & msb) 
+	 * will suffice to represent both signs. note that z has already 
+	 * been calculated to determine if its signed or unsigned, this 
+	 * is XOR'd with x to check and see if both signsare the same.
+	 *
+	 * if both signs are same, in this case we will use both signed, 
+	 * 0x10000000 ^ 0x10000000 = 0x0, which will then be bang'd once 
+	 * to return 1 for an OK to add. if they aren't the same value 
+	 * after determining that both signs are the same, result will 
+	 * be 1, and bang'd will return 0.
+	 *
+	 * the outside double bang is there to confirm a 0 or 1 instead
+	 * of ---> 0x10000000 or 0x0 from the left hand side.
+	 *
+	 * */
+	return !!((x & msb) ^ (y & msb)) | !((x & msb) ^ z);
 }
 /* 
  * absVal - absolute value of x
@@ -293,9 +318,7 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int absVal(int x) {
-  int result = ((~(x)&(x>>31&1)<<31>>31)+(x>>31&1)); //Deals with if number is negative - returns two's complement of it if so and 0 if number is positive by only matching number if MSB is 1
-  result |= (x&(~x>>31&1)<<31>>31); //Same logic as above, but matches if MSB is 0 and deals with positive
-  return result;
+return 2;
 }
 /*************************************************************
  * BONUS puzzles BELOW! be advised, some are quite difficult *
@@ -313,7 +336,30 @@ int absVal(int x) {
  *  Rating: 3
  */
 int byteSwap(int x, int n, int m) {
-    return 2;
+    int first_index, sec_index, first_val, sec_val, hex_ff; // declaring variables that will be used later
+	int first_to_sec, sec_to_first, result; 		// these will store the swapped positions for each of the values from each index.
+
+	first_index = (x >> (n << 3)); // (n << 3) will shift x by 0, 8, 16, or 24 depending on the values entered. 
+				       // the values 0000, 1000, 10000, 11000 are created this will put two hexdecimals
+				       // in the lower 8 bits to be masked.
+	sec_index   = (x >> (m << 3)); // (m << 3) will shift x by 0, 8, 16, or 24 as well to be able to mask the lower 8 bits.
+	
+	hex_ff = 0xFF; //will be used to mask off 2 hexdecimals represented by first_index and second_index
+	
+	first_val = (first_index & hex_ff); // the mask will store the value inside as a 2 hex value
+	sec_val   = (sec_index   & hex_ff); // the second index value stored as a 2 hex value
+
+	first_to_sec = (first_val << (m << 3)); // the first_val will be shifted back to sec_index
+	sec_to_first = (sec_val   << (n << 3)); // sec_val will be shifted back to first_index 
+	
+	result = (first_to_sec | sec_to_first); // the result ORs both values. ie if byteSwap(0x12345678, 1, 3) ---> 0x56001200
+	
+	x = (~((hex_ff << (m << 3)) | (hex_ff << (n << 3))) & x); // (0xFF00FF00 is created by ORing both hex_ff shifted to the left by 
+								  // m amount, and the lower half by n amount. x being 0x12345678 will
+								  // get back 0x12003400 which is not what we need, so instead we complement
+								  // 0xFF00FF00 to get 0x00FF00FF & x which will get 0x00340078.
+
+	return (result | x);					  // (0x56001200 | 0x00340078) ==> 0x56341278
 }
 /*
  * bitCount - returns count of number of 1's in word
@@ -323,41 +369,13 @@ int byteSwap(int x, int n, int m) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  int result = 0;
-  result = result + ((x>>0)&1);
-  result = result + ((x>>1)&1);
-  result = result + ((x>>2)&1);
-  result = result + ((x>>3)&1);
-  result = result + ((x>>4)&1);
-  result = result + ((x>>5)&1);
-  result = result + ((x>>6)&1);
-  result = result + ((x>>7)&1);
-  result = result + ((x>>8)&1);
-  result = result + ((x>>9)&1);
-  result = result + ((x>>10)&1);
-  result = result + ((x>>11)&1);
-  result = result + ((x>>12)&1);
-  result = result + ((x>>13)&1);
-  result = result + ((x>>14)&1);
-  result = result + ((x>>15)&1);
-  result = result + ((x>>16)&1);
-  result = result + ((x>>17)&1);
-  result = result + ((x>>18)&1);
-  result = result + ((x>>19)&1);
-  result = result + ((x>>20)&1);
-  result = result + ((x>>21)&1);
-  result = result + ((x>>22)&1);
-  result = result + ((x>>23)&1);
-  result = result + ((x>>24)&1);
-  result = result + ((x>>25)&1);
-  result = result + ((x>>26)&1);
-  result = result + ((x>>27)&1);
-  result = result + ((x>>28)&1);
-  result = result + ((x>>29)&1);
-  result = result + ((x>>30)&1);
-  result = result + ((x>>31)&1);
-
-  return result;
+x = x + (x >> 16);
+	x = x + (x >> 8);
+	x = x + (x >> 4);
+	x = x + (x >> 2);
+	x = x + (x >> 1);
+	
+	return x & 63;
 }
 /* 
  * logicalShift - shift x to the right by n, using a logical shift
@@ -368,5 +386,23 @@ int bitCount(int x) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  return (x >> n) & ~(((1&(!!n))<<31)>>(n)<<1);
+  int msb, cancel_if_pos, remove_extra_bit;
+	
+	x = x >> n; // shift x by the specified amount, note that this will maintain the sign bit if neg
+
+	msb = 0x1 << 31; 		    // creates a mask of 0x80000000
+	cancel_if_pos = ~(!!(x & msb)) + 1; // x is masked to determine if operation needs to be done,
+       					    // gives 0x0 if x == positive, or 0xFFFFFFFF if x == negative.
+	
+	msb = msb >> n; 	      // msb is shifted by the same amount to mask out the negative values
+	remove_extra_bit = msb << 1;  // msb is shifted back one b/c of the extra bits that aren't needed in front of the value
+				      // ie, if msb is 0xFF------, then the remove_extra_bit will make msb = 0xFE------
+
+	remove_extra_bit = (msb ^ remove_extra_bit); // remove_extra_bit will get rid of the extra bit that overlaps msb's 
+						     // value (designed to remove the sign bits).
+						     
+	msb = msb ^ remove_extra_bit; // msb is corrected with a new value with the removed extra bit 
+				      // (only keeping the signed bits).
+	
+	return (x & ~(cancel_if_pos)) | (x & (cancel_if_pos) & (x ^ msb));
 }
