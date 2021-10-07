@@ -203,4 +203,4 @@ for line in sys.stdin:
   Sat_data.append(new_sat_trans)
 
 #Last set of transmissions
-print( calc_veh_pos(Sat_data) )
+  print( calc_veh_pos(Sat_data) )
