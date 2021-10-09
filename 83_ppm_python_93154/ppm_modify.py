@@ -44,5 +44,7 @@ def main():
     4. WRite the complete docstring
     """
     pass
+
 if __name__ == '__main__':
-    main() 
+    main_part1() # comment this out after you check-in for part 1
+    # main() # uncomment this after you check-in for part 1
