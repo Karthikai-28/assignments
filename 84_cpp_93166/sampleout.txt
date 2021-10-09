@@ -1,0 +1,58 @@
+Initial nonempty lists status
+1 10 9 8 7 6 5 4 3 2 1
+3 8 7 6 5 4 3 2 1
+4 7 6 5 4 3 2 1
+7 9 8 7 6 5 4 3 2 1
+
+After ordering nonempty lists status
+1 1 2 3 4 5 6 7 8 9 10
+3 1 2 3 4 5 6 7 8
+4 1 2 3 4 5 6 7
+7 1 2 3 4 5 6 7 8 9
+
+Phase1 execution
+
+Line# 1
+Monster# 3 executed
+Monster# 6 executed
+Monster# 9 executed
+Monster# 2 executed
+Monster# 7 executed
+Monster# 1 executed
+Monster# 8 executed
+Monster# 5 executed
+
+Line# 3
+Monster# 2 executed
+Monster# 4 executed
+Monster# 6 executed
+Monster# 8 executed
+Monster# 3 executed
+Monster# 7 executed
+Monster# 5 executed
+
+Line# 4
+Monster# 3 executed
+Monster# 6 executed
+Monster# 2 executed
+Monster# 7 executed
+
+Line# 7
+Monster# 2 executed
+Monster# 4 executed
+Monster# 6 executed
+Monster# 8 executed
+Monster# 1 executed
+
+Phase2 execution
+Executed Monster 4 from line 1
+Executed Monster 10 from line 1
+Executed Monster 3 from line 7
+Executed Monster 5 from line 7
+Executed Monster 7 from line 7
+Executed Monster 9 from line 7
+Executed Monster 1 from line 3
+Executed Monster 1 from line 4
+Executed Monster 4 from line 4
+
+Monster 5 from line 4 will survive
