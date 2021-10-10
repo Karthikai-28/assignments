@@ -2,6 +2,8 @@
     "files.associations": {
         "iostream": "cpp",
         "functional": "c",
-        "*.ipp": "c"
+        "*.ipp": "c",
+        "leak_detector.h": "c",
+        "leak_detector_c.h": "c"
     }
 }
