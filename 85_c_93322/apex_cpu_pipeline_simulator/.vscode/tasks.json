@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"id": "shell,make build --file=c:\\Users\\USER\\.vscode\\extensions\\franneck94.c-cpp-runner-1.4.1\\templates\\Makefile --directory=FILE_DIR COMPILATION_MODE=Debug EXECUTABLE_NAME=outDebug.exe LANGUAGE_MODE=C C_COMPILER=gcc ENABLE_WARNINGS=1 WARNINGS_AS_ERRORS=0 WARNINGS=\"-Wall -Wextra -Wpedantic\",",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"label": "C_Cpp_Runner: Build: apex_cpu_pipeline_simulator",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
