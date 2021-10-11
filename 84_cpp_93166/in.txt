@@ -1,0 +1,8 @@
+7
+3 appleandpineapple 7 3 3
+7 mandrianorange 5 2 3
+2 blueberrycraneberryraspberrystrawberryblackberry 10 3 2 
+8 watermelonandhoneymelon 9 2 4 
+5 mango 8 2 1
+4 peach 7 2 1
+10 avocado 9 3 5

@@ -1,0 +1,78 @@
+Initial nonempty lists status
+2 blueberrycraneberryraspberrystrawberryblackberry 10 9 8 7 6 5 4 3 2 1 
+3 appleandpineapple 7 6 5 4 3 2 1 
+4 peach 7 6 5 4 3 2 1 
+5 mango 8 7 6 5 4 3 2 1 
+7 mandrianorange 5 4 3 2 1 
+8 watermelonandhoneymelon 9 8 7 6 5 4 3 2 1 
+
+After ordering nonempty lists status
+2 blueberrycraneberryraspberrystrawberryblackberry 1 2 3 4 5 6 7 8 9 10 
+3 appleandpineapple 1 2 3 4 5 6 7 
+4 peach 1 2 3 4 5 6 7 
+5 mango 1 2 3 4 5 6 7 8 
+7 mandrianorange 1 2 3 4 5 
+8 watermelonandhoneymelon 1 2 3 4 5 6 7 8 9 
+
+Phase1 execution
+
+Line# 2 blueberrycraneberryraspberrystrawberryblackberry
+Soldier# 3 executed
+Soldier# 6 executed
+Soldier# 9 executed
+Soldier# 2 executed
+Soldier# 7 executed
+Soldier# 1 executed
+Soldier# 8 executed
+Soldier# 5 executed
+
+Line# 3 appleandpineapple
+Soldier# 3 executed
+Soldier# 6 executed
+Soldier# 2 executed
+Soldier# 7 executed
+
+Line# 4 peach
+Soldier# 2 executed
+Soldier# 4 executed
+Soldier# 6 executed
+Soldier# 1 executed
+Soldier# 5 executed
+Soldier# 3 executed
+
+Line# 5 mango
+Soldier# 2 executed
+Soldier# 4 executed
+Soldier# 6 executed
+Soldier# 8 executed
+Soldier# 3 executed
+Soldier# 7 executed
+Soldier# 5 executed
+
+Line# 7 mandrianorange
+Soldier# 2 executed
+Soldier# 4 executed
+
+Line# 8 watermelonandhoneymelon
+Soldier# 2 executed
+Soldier# 4 executed
+Soldier# 6 executed
+Soldier# 8 executed
+Soldier# 1 executed
+
+Phase2 execution
+Executed Soldier 7 from line 4
+Executed Soldier 4 from line 2
+Executed Soldier 10 from line 2
+Executed Soldier 3 from line 8
+Executed Soldier 5 from line 8
+Executed Soldier 7 from line 8
+Executed Soldier 9 from line 8
+Executed Soldier 1 from line 3
+Executed Soldier 4 from line 3
+Executed Soldier 5 from line 3
+Executed Soldier 1 from line 5
+Executed Soldier 1 from line 7
+Executed Soldier 3 from line 7
+
+Soldier 5 from line 7 will survive

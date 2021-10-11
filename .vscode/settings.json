@@ -4,6 +4,7 @@
         "functional": "c",
         "*.ipp": "c",
         "leak_detector.h": "c",
-        "leak_detector_c.h": "c"
+        "leak_detector_c.h": "c",
+        "stdlib.h": "c"
     }
 }

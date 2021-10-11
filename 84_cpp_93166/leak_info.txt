@@ -1,0 +1,52 @@
+Memory Leak Summary
+-----------------------------------
+address : 0x90000000a
+size    : 3 bytes
+file    : 
+line    : 63
+-----------------------------------
+address : 0x7ff3cd409510
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409650
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409790
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd4098d0
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409a10
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409b50
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409c90
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409dd0
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
+address : 0x7ff3cd409f10
+size    : 24 bytes
+file    : main.c
+line    : 154
+-----------------------------------
