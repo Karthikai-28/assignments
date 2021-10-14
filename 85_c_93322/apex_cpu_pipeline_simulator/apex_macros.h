@@ -33,6 +33,13 @@
 #define OPCODE_BNZ 0xb
 #define OPCODE_HALT 0xc
 
+#define OPCODE_ADDL 0xd
+#define OPCODE_SUBL 0xe
+#define OPCODE_LDR 0xf
+#define OPCODE_STR 0x10
+#define OPCODE_CMP 0x11
+#define OPCODE_NOP 0x12
+
 /* Set this flag to 1 to enable debug messages */
 #define ENABLE_DEBUG_MESSAGES 1
 

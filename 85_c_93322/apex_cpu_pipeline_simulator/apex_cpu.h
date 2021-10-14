@@ -39,6 +39,8 @@ typedef struct CPU_Stage
     int has_insn;
 } CPU_Stage;
 
+
+
 /* Model of APEX CPU */
 typedef struct APEX_CPU
 {
@@ -52,6 +54,8 @@ typedef struct APEX_CPU
     int single_step;               /* Wait for user input after every cycle */
     int zero_flag;                 /* {TRUE, FALSE} Used by BZ and BNZ to branch */
     int fetch_from_next_cycle;
+    int reg_values[REG_FILE_SIZE] ;
+    int fetch_stall;
 
     /* Pipeline stages */
     CPU_Stage fetch;
