@@ -49,7 +49,6 @@ int main() {
     
     {
 
-
         vector<string> easyBoard{"23 915   ",
                                  "   2  54 ",
                                  "6 7      ",
@@ -79,9 +78,6 @@ int main() {
    
                                  
         unique_ptr<Sudoku> board(new Sudoku(9));
-
-
-        
 
         if (!fillBoard(board.get(), easyBoard)) {
             cout << "Failed: When filling the board, setSquare() returned false\n";
