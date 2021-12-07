@@ -4,263 +4,210 @@
  * CS280 - Fall 2021
  */
 
-#include <cctype>
+#include <iostream>
+#include <string>
 #include <map>
-
-using std::map;
+#include <stdlib.h>
+#include <time.h>
+#include <bits/stdc++.h>
+#include "lex.h"
 using namespace std;
 
-#include "lex.h"
-static map<Token,string> tokenPrint = {
-		{PROGRAM, "PROGRAM"},
-		{WRITE, "WRITE"},
-		{INT, "INT"},
-		{ END, "END" },
-		{ IF, "IF" },
-		{FLOAT, "FLOAT"},
-		{STRING, "STRING"},
-		{ REPEAT, "REPEAT" },
-		
-		
-		{BEGIN, "BEGIN"},
+map<string, Token>::iterator it;
+static map<string, Token> keyWords = {
+	{"print", PRINT},
+	{"let", LET},
+	{"if", IF},
+	{"loop", LOOP},
+	{"begin", BEGIN},
+	{"end", END}
 
-		{ IDENT, "IDENT" },
-
-		{ ICONST, "ICONST" },
-		{ RCONST, "RCONST" },
-		{ SCONST, "SCONST" },
-		
-		{ PLUS, "PLUS" },
-		{ MINUS, "MINUS" },
-		{ MULT, "MULT" },
-		{ DIV, "DIV" },
-		{REM, "REM"},
-		{ ASSOP, "ASSOP" },
-		{ LPAREN, "LPAREN" },
-		{ RPAREN, "RPAREN" },
-            
-		{ COMMA, "COMMA" },
-		{ EQUAL, "EQUAL" },
-		{ GTHAN, "GTHAN" },
-		
-		{ SEMICOL, "SEMICOL" },
-		
-		{ ERR, "ERR" },
-
-		{ DONE, "DONE" },
 };
 
-//Keywords mapping
-static map<string,Token> kwmap = {
-		{"PROGRAM", PROGRAM},
-		{"WRITE", WRITE},
-		{ "INT", INT},
-		{ "FLOAT", FLOAT},
-		{ "STRING", STRING},
-		{ "REPEAT", REPEAT },
-		{ "BEGIN", BEGIN },
-		{"IF", IF},
-		{ "END", END },
-};
-    
-ostream& operator<<(ostream& out, const LexItem& tok) {
-	Token tt = tok.GetToken();
-	out << tokenPrint[ tt ];
-	if( tt == IDENT || tt == ICONST || tt == SCONST || tt == RCONST || tt == ERR ) {
-		out << "(" << tok.GetLexeme() << ")";
+extern ostream& operator<<(ostream& out, const Lex& tok) {
+	map<Token, string> printMap = {
+	{PRINT, "PRINT"},
+	{LET, "LET"},
+	{IF, "IF"},
+	{LOOP, "LOOP"},
+	{BEGIN, "BEGIN"},
+	{END, "END"},
+	{ID, "ID"},
+	{INT, "INT"},
+	{STR,"STR"},
+	{PLUS, "PLUS"},
+	{MINUS,"MINUS"},
+	{STAR, "STAR"},
+	{SLASH,"SLASH"},
+	{BANG, "BANG"},
+	{LPAREN, "LPAREN"},
+	{RPAREN, "RPAREN"},
+	{SC, "SC"}
+	};
+
+	Token t = tok.GetToken();
+	if (t == ID || t == INT || t == STR || t == ERR) {
+		out << printMap.find(t)->second << "(" << tok.GetLexeme() << ")";
+		return out;
 	}
+	out << printMap[t];
 	return out;
 }
 
-LexItem id_or_kw(const string& lexeme, int linenum)
-{
-	Token tt = IDENT;
-
-	auto kIt = kwmap.find(lexeme);
-	if( kIt != kwmap.end() )
-		tt = kIt->second;
-
-	return LexItem(tt, lexeme, linenum);
-}
-
-
-
-LexItem
-getNextToken(istream& in, int& linenum)
-{
-	enum TokState { START, INID, INSTRING, ININT, INFLOAT, INCOMMENT } lexstate = START;
+Lex getNextToken(istream& in, int& linenum) {
 	string lexeme;
-	char ch, nextch, nextchar;
-	       
-	//cout << "in getNestToken" << endl;
-    while(in.get(ch)) {
-    	//cout << "in while " << ch << endl;
-		switch( lexstate ) {
-		case START:
-			if( ch == '\n' )
+	char ch;
+	bool begin = true, op = false, inid = false, instring = false, inint = false, forwardslash = false, backslash = false, incomment = false;
+	while (in.get(ch)) {
+		if (begin) {
+			if (ch == '\n') {
 				linenum++;
-                
-			if( isspace(ch) )
+			}
+			if (isspace(ch)) {
 				continue;
+			}
+			if (ch == '/') {
+				forwardslash = true;
+				begin = false;
+				continue;
+			}
 
-			lexeme = ch;
-
-			if( isalpha(ch) ) {
-				lexeme = toupper(ch);
-				lexstate = INID;
-			}
-			else if( ch == '"' ) {
-				lexstate = INSTRING;
-				
-			}
-			
-			else if( isdigit(ch) ) {
-				lexstate = ININT;
-			}
-			else if( ch == '#' ) {
-				lexstate = INCOMMENT;
-			}	
-						
-			else {
-				Token tt = ERR;
-				switch( ch ) {
-				case '+':
-					tt = PLUS;
-                    break;  
-					
-				case '-':
-					tt = MINUS;
-                    break; 
-					
-				case '*':
-					tt = MULT;
-					break;
-
-				case '/':
-					tt = DIV;
-					break;
-					
-				case '%':
-					tt = REM;
-					break;
-				case '=':
-					nextchar = in.peek();
-					if(nextchar == '='){
-						in.get(ch);
-						tt = EQUAL;
-						break;
-					}
-					tt = ASSOP;
-					break;
-				case '(':
-					tt = LPAREN;
-					break;
-				case ')':
-					tt = RPAREN;
-					break;
-				
-				case ';':
-					tt = SEMICOL;
-					break;
-				case ',':
-					tt = COMMA;
-					break;
-				case '>':
-					tt = GTHAN;
-					break;
-				
-				case '.':
-					nextch = in.peek();
-					if(isdigit(nextch)){
-						lexstate = INFLOAT;
-						continue;
-					}
-					else {
-						lexeme += nextch;
-						return LexItem(ERR, lexeme, linenum);
-						cout << "Here what?" << endl;
-					}
-					
-				}
-				
-				return LexItem(tt, lexeme, linenum);
-			}
-			break;
-
-		case INID:
-			if( isalpha(ch) || isdigit(ch) || ch == '_') {
-				ch = toupper(ch);
-				//cout << "inid " << ch << endl;
-				lexeme += ch;
-			}
-			else {
-				in.putback(ch);
-				return id_or_kw(lexeme, linenum);
-			}
-			break;
-
-		case INSTRING:
-                          
-			if( ch == '\n' ) {
-				return LexItem(ERR, lexeme, linenum);
-			}
 			lexeme += ch;
-			if( ch == '"' ) {
-				lexeme = lexeme.substr(1, lexeme.length()-2);
-				return LexItem(SCONST, lexeme, linenum);
-			}
-			break;
 
-		case ININT:
-			if( isdigit(ch) ) {
-				lexeme += ch;
+			if (isalpha(ch)) {
+				inid = true;
+				begin = false;
+				continue;
 			}
-			else if(ch == '.') {
-				lexstate = INFLOAT;
-				in.putback(ch);
-				
+			else if (ch == '"') {
+				instring = true;
+				begin = false;
+				continue;
 			}
-			else {
-				in.putback(ch);
-				return LexItem(ICONST, lexeme, linenum);
-			}
-			break;
-		
-		case INFLOAT:
-			if( ch == '.' && isdigit(in.peek()) ) {
-				lexeme += ch;
-				
-			}
-			else if(isdigit(ch)){
-				lexeme += ch;
-			}
-			else if(ch == '.' && !isdigit(in.peek())){
-				lexeme += ch;
-				return LexItem(ERR, lexeme, linenum);
+			else if (isdigit(ch)) {
+				inint = true;
+				begin = false;
+				continue;
 			}
 			else {
-				in.putback(ch);
-				return LexItem(RCONST, lexeme, linenum);
+				op = true;
+				begin = false;
 			}
-			break;
-		
-					
-		case INCOMMENT:
-			if( ch == '\n' ) {
-               ++linenum;
-				lexstate = START;
-			}
-			break;
 		}
 
-	}//end of while loop
+		if (op) {
+			Token t = ERR;
+			if (ch == '+') {
+				t = PLUS;
+			}
+			if (ch == '-') {
+				t = MINUS;
+			}
+			if (ch == '*') {
+				t = STAR;
+			}
+			if (ch == '!') {
+				t = BANG;
+			}
+			if (ch == '(') {
+				t = LPAREN;
+			}
+			if (ch == ')') {
+				t = RPAREN;
+			}
+			if (ch == ';') {
+				t = SC;
+			}
+			return Lex(t, lexeme, linenum);
+		}
 
-	if( in.eof() )
-		return LexItem(DONE, "", linenum);
-	return LexItem(ERR, "some strange I/O error", linenum);
+
+		if (inid) {
+			if (isalpha(ch) || isdigit(ch)) {
+				lexeme += ch;
+			}
+			else {
+				in.putback(ch);
+				Token t = ID;
+				for (it = keyWords.begin(); it != keyWords.end(); it++) {
+					if (it->first == lexeme) {
+						t = it->second;
+					}
+				}
+				return Lex(t, lexeme, linenum);
+			}
+		}
+
+		if (instring) {
+			if (ch == '\n') {
+				lexeme += ch;
+				return Lex(ERR, lexeme, linenum);
+			}
+			else if (ch == '\\') {
+				backslash = true;
+				instring = false;
+				continue;
+			}
+			else if (ch == '"') {
+				lexeme.erase(0, 1);
+				return Lex(STR, lexeme, linenum);
+			}
+			else {
+				lexeme += ch;
+			}
+		}
+
+		if (inint) {
+			if (isdigit(ch)) {
+				lexeme += ch;
+			}
+			else if (isalpha(ch)) {
+				lexeme += ch;
+				return Lex(ERR, lexeme, linenum);
+			}
+			else {
+				in.putback(ch);
+				return Lex(INT, lexeme, linenum);
+			}
+		}
+
+		if (forwardslash) {
+			if (ch != '/') {
+				in.putback(ch);
+				return Lex(SLASH, lexeme, linenum);
+			}
+			else {
+				incomment = true;
+				forwardslash = false;
+				continue;
+			}
+		}
+
+		if (backslash) {
+			if (ch == 'n') {
+				lexeme += '\n';
+			}
+			else {
+				lexeme += ch;
+				instring = true;
+				backslash = false;
+				continue;
+			}
+		}
+
+		if (incomment) {
+			if (ch == '\n') {
+				begin = true;
+				incomment = false;
+				linenum++;
+			}
+			continue;
+		}
+	}
+
+	if (in.eof()) {
+		return Lex(DONE, lexeme, linenum);
+	}
+
+	return Lex(DONE, lexeme, linenum);
 }
-
-
-
-
-

@@ -10,24 +10,22 @@
 
 #include <string>
 #include <iostream>
-#include <map>
-using namespace std;
+using std::string;
+using std::istream;
+using std::ostream;
 
-
-//Definition of all the possible token types
 enum Token {
 		// keywords
-	PROGRAM, WRITE, INT, END, IF, FLOAT, STRING,
+	PRINT, LET, IF, LOOP, BEGIN, END,
 
 		// an identifier
-	REPEAT, BEGIN, IDENT,
+	ID,
 
-		// an integer, real, and string constant
-	ICONST, RCONST, SCONST, 
+		// an integer and string constant
+	INT, STR,
 
 		// the operators, parens, semicolon
-	PLUS, MINUS, MULT, DIV, REM, ASSOP, LPAREN, RPAREN, COMMA, 
-	EQUAL, GTHAN, SEMICOL,
+	PLUS, MINUS, STAR, SLASH, BANG, LPAREN, RPAREN, SC,
 		// any error returns this token
 	ERR,
 
@@ -35,37 +33,33 @@ enum Token {
 	DONE
 };
 
-
-//Class definition of LexItem
-class LexItem {
-	Token	token;
+class Lex {
+	Token	tok;
 	string	lexeme;
-	int	lnum;
+	int		lnum;
 
 public:
-	LexItem() {
-		token = ERR;
+	Lex() {
+		tok = ERR;
 		lnum = -1;
 	}
-	LexItem(Token token, string lexeme, int line) {
-		this->token = token;
+	Lex(Token tok, string lexeme, int line) {
+		this->tok = tok;
 		this->lexeme = lexeme;
 		this->lnum = line;
 	}
 
-	bool operator==(const Token token) const { return this->token == token; }
-	bool operator!=(const Token token) const { return this->token != token; }
+	bool operator==(const Token tok) const { return this->tok == tok; }
+	bool operator!=(const Token tok) const { return this->tok != tok; }
 
-	Token	GetToken() const { return token; }
+	Token	GetToken() const { return tok; }
 	string	GetLexeme() const { return lexeme; }
-	int	GetLinenum() const { return lnum; }
+	int		GetLinenum() const { return lnum; }
 };
 
+extern ostream& operator<<(ostream& out, const Lex& tok);
 
-
-extern ostream& operator<<(ostream& out, const LexItem& tok);
-extern LexItem id_or_kw(const string& lexeme, int linenum);
-extern LexItem getNextToken(istream& in, int& linenum);
+extern Lex getNextToken(istream& in, int& linenum);
 
 
 #endif /* LEX_H_ */
