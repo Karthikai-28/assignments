@@ -1,0 +1,72 @@
+Brave Balto
+6 2 1975
+Disney Road
+Orlando
+Florida
+35672
+415-782-5555
+Business
+Bash Bashfull
+8 2 1965
+Long Road
+New York
+New York
+01101
+212-782-8000
+Friend
+Donald Duck
+6 10 1980
+Disney Street
+Orlando
+Florida
+11234
+622-873-8920
+Friend
+Goof Goofy
+6 2 1965
+Disney Street
+Los Angles
+California
+91340
+215-782-9000
+Family
+Matt Hamilton
+16 11 1995
+Fair ave
+Los Angeles
+California
+91601
+212-782-8000
+Friend
+Molly Korly
+31 2 2012
+Cohuaenga ave
+Los Angeles
+California
+90003
+212-782-8000
+Business
+Shelly Malik
+8 12 2000
+Lincoln Drive
+Omaha
+Nebraska
+68131
+402-555-1212
+Family
+Martha McCorny
+21 11 1981
+Cohuaenga ave
+Los Angeles
+California
+90003
+212-782-8000
+Business
+Chelsea Tomak
+8 12 1999
+Kennedy Blvd
+Omaha
+Nebraska
+68172
+402-777-8888
+Friend

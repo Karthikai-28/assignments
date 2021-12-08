@@ -1,0 +1,72 @@
+Shelly Malik
+12 8 2000
+Lincoln Drive
+Omaha
+Nebraska
+68131
+402-555-1212
+Family
+Donald Duck
+10 6 1980
+Disney Street
+Orlando
+Florida
+11234
+622-873-8920
+Friend
+Chelsea Tomak
+12 8 1999
+Kennedy Blvd
+Omaha
+Nebraska
+68172
+402-777-8888
+Friend
+Goof Goofy
+2 6 1965
+Disney Street
+Los Angles
+California
+91340
+215-782-9000
+Family
+Brave Balto
+2 6 1975
+Disney Road
+Orlando
+Florida
+35672
+415-782-5555
+Business
+Bash Bashfull
+2 8 1965
+Long Road
+New York
+New York
+01101
+212-782-8000
+Friend
+Matt Hamilton
+11 16 1995
+Fair ave
+Los Angeles
+California
+91601
+212-782-8000
+Friend
+Martha McCorny
+11 21 1981
+Cohuaenga ave
+Los Angeles
+California
+90003
+212-782-8000
+Business
+Molly Korly
+02 50 -5000
+Cohuaenga ave
+Los Angeles
+California
+90003
+212-782-8000
+Business
