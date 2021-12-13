@@ -1,0 +1,21 @@
+ 
+RENE ANTOUN CIST 0039
+
+
+C-STRINGS AND BYTE OPERATIONS PROGRAM OUTPUT
+
+
+
+RENE ANTOUN		CIST 039	
+
+Enter a string: hello there world!  How are you today?  I'm fine.
+There are 49 characters in: "hello there world!  How are you today?  I'm fine.".
+There are 15 vowels in: "hello there world!  How are you today?  I'm fine.".
+Upper case first characters: "Hello There World!  How Are You Today?  I'm Fine.".
+Shouting: "HELLO THERE WORLD!  HOW ARE YOU TODAY?  I'M FINE.".
+Extra spaces removed: "HELLO THERE WORLD! HOW ARE YOU TODAY? I'M FINE.".
+
+
+------------------
+(program exited with code: 0)
+Press return to continue

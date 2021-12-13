@@ -1,0 +1,443 @@
+ARM GAS  C-StringsProgram.s 			page 1
+
+
+   1              	
+   2              	
+   3              	
+   4              	
+   5              	.data
+   6              	
+   7 0000 2054414C 	courseString: 			.string "RENE ANTOUN\t\tCIST 039\t\n"
+   7      414C2045 
+   7      4C205A45 
+   7      494E4909 
+   7      09434953 
+   8 001c 0A456E74 	stringInput: 			.string "\nEnter a string: "
+   8      65722061 
+   8      20737472 
+   8      696E673A 
+   8      2000
+   9              	
+  10 002e 00000000 	inputBuffer: 			.SKIP 81
+  10      00000000 
+  10      00000000 
+  10      00000000 
+  10      00000000 
+  11              	
+  12 007f 54686572 	charsCounter: 			.string "There are %d characters in: \"%s\".\n"
+  12      65206172 
+  12      65202564 
+  12      20636861 
+  12      72616374 
+  13 00a2 54686572 	vowelsCounter: 			.string "There are %d vowels in: \"%s\".\n"
+  13      65206172 
+  13      65202564 
+  13      20766F77 
+  13      656C7320 
+  14 00c1 55707065 	upperFirst: 			.string "Upper case first characters: \"%s\".\n"
+  14      72206361 
+  14      73652066 
+  14      69727374 
+  14      20636861 
+  15 00e5 53686F75 	messageShout: 			.string "Shouting: \"%s\".\n"
+  15      74696E67 
+  15      3A202225 
+  15      73222E0A 
+  15      00
+  16 00f6 45787472 	spaceRemoverString: 	.string "Extra spaces removed: \"%s\".\n"
+  16      61207370 
+  16      61636573 
+  16      2072656D 
+  16      6F766564 
+  17              	
+  18              	.text
+  19              	.global main
+  20              	
+  21              	
+  22              	
+  23              	
+  24              	main:
+  25              	
+ARM GAS  C-StringsProgram.s 			page 2
+
+
+  26 0000 00402DE9 		STMDB 		SP!, {LR}
+  27 0004 40029FE5 		LDR 		R0, =courseString
+  28 0008 FEFFFFEB 		BL 			printf
+  29 000c 3C029FE5 		LDR 		R0, =stringInput
+  30 0010 FEFFFFEB 		BL 			printf
+  31              		
+  32              		
+  33              		
+  34              	// user input entered and read
+  35              	
+  36 0014 38029FE5 		LDR 		R0, =inputBuffer
+  37 0018 5110A0E3 		MOV 		R1, #81
+  38 001c 1D0000EB 		BL 			getLine
+  39              		
+  40              		
+  41              		
+  42              	// printing number of characters  
+  43              	
+  44 0020 2C029FE5 		LDR 		R0, =inputBuffer
+  45 0024 2A0000EB 		BL 			countCharacter
+  46 0028 0010A0E1 		MOV 		R1, R0  
+  47 002c 20229FE5 		LDR 		R2, =inputBuffer
+  48 0030 20029FE5 		LDR 		R0, =charsCounter
+  49 0034 FEFFFFEB 		BL 			printf
+  50              		
+  51              		
+  52              		
+  53              	// printing number of vowels
+  54              	
+  55 0038 14029FE5 		LDR 		R0, =inputBuffer
+  56 003c 2D0000EB 		BL 			countVowels
+  57 0040 0010A0E1 		MOV 		R1, R0
+  58 0044 08229FE5 		LDR 		R2, =inputBuffer
+  59 0048 0C029FE5 		LDR 		R0, =vowelsCounter
+  60 004c FEFFFFEB 		BL			printf
+  61              		
+  62              		
+  63              		
+  64              	// printing upper case 	
+  65              	
+  66 0050 FC019FE5 		LDR 		R0, =inputBuffer
+  67 0054 400000EB 		BL 			functionUpper
+  68 0058 F4119FE5 		LDR 		R1, =inputBuffer
+  69 005c FC019FE5 		LDR 		R0, =upperFirst
+  70 0060 FEFFFFEB 		BL 			printf
+  71              	
+  72              	
+  73              	
+  74              	// priting the shouting message 
+  75              	
+  76 0064 E8019FE5 		LDR 		R0, =inputBuffer
+  77 0068 4F0000EB 		BL 			shoutingFunction
+  78 006c E0119FE5 		LDR 		R1, =inputBuffer
+  79 0070 EC019FE5 		LDR 		R0, =messageShout
+  80 0074 FEFFFFEB 		BL 			printf
+  81              	
+  82              	
+ARM GAS  C-StringsProgram.s 			page 3
+
+
+  83              	
+  84              	// priting the message without extra spaces
+  85              	
+  86 0078 D4019FE5 		LDR 		R0, =inputBuffer
+  87 007c 560000EB 		BL 			removeSpaces
+  88 0080 CC119FE5 		LDR 		R1, =inputBuffer
+  89 0084 DC019FE5 		LDR 		R0, =spaceRemoverString
+  90 0088 FEFFFFEB 		BL 			printf
+  91 008c 0040BDE8 		LDMIA		SP!, {LR}
+  92 0090 0000A0E3 		MOV 		R0, #0
+  93 0094 1EFF2FE1 		BX			LR	
+  94              	
+  95              	
+  96              	
+  97              	
+  98              	
+  99              	
+ 100              	
+ 101              	
+ 102              	
+ 103              	
+ 104              	
+ 105              	// Input:
+ 106              	// 	R0 is the base address of the start of the user string inputBuffer
+ 107              	//	and R1 is the length of the user string
+ 108              	// Output:
+ 109              	//	None
+ 110              	
+ 111              	// getline function 
+ 112              	
+ 113              	getLine:
+ 114 0098 30402DE9 	      STMDB 	SP!, {R4, R5, LR}
+ 115 009c 0040A0E1 	      MOV 		R4, R0
+ 116 00a0 0150A0E1 	      MOV 		R5, R1
+ 117              		
+ 118              	secondGetline:
+ 119 00a4 FEFFFFEB 	      BL 		getchar
+ 120 00a8 0A0050E3 	      CMP 		R0, #'\n'
+ 121 00ac 0400000A 	      BEQ 		Exit
+ 122 00b0 0000C4E5 	      STRB 		R0, [R4]
+ 123 00b4 014084E2 	      ADD 		R4, R4, #1
+ 124 00b8 010055E3 	      CMP 		R5, #1
+ 125 00bc 015045E2 	      SUB 		R5, R5, #1
+ 126 00c0 F7FFFFCA 	      BGT 		secondGetline
+ 127              		
+ 128              	Exit:
+ 129 00c4 0000A0E3 	      MOV 		R0, #0
+ 130 00c8 0000C4E5 	      STRB 		R0, [R4]
+ 131 00cc 3040BDE8 	      LDMIA 	SP!, {R4, R5, LR}
+ 132 00d0 1EFF2FE1 	      BX 		LR
+ 133              	
+ 134              	
+ 135              	
+ 136              	
+ 137              	
+ 138              	
+ 139              	
+ARM GAS  C-StringsProgram.s 			page 4
+
+
+ 140              	
+ 141              	// Input:
+ 142              	// 	R0 is the base address of the start of the user string inputBuffer
+ 143              	// Output:
+ 144              	//	R0 is the number of characters in the user string
+ 145              	
+ 146              	// count characters function
+ 147              	
+ 148              	countCharacter:
+ 149 00d4 0020A0E3 	      MOV 		R2, #00
+ 150 00d8 0010A0E1 	      MOV 		R1, R0
+ 151              	      
+ 152              	charCounterLoop:
+ 153 00dc 0200D1E7 	      LDRB   	R0, [R1, R2]
+ 154 00e0 000050E3 	      CMP    	R0, #00
+ 155 00e4 0100000A 	      BEQ    	countingCharsDone
+ 156              	      
+ 157 00e8 012082E2 	      ADD  		R2, R2, #01
+ 158 00ec FAFFFFEA 	      B    		charCounterLoop
+ 159              	       
+ 160              	countingCharsDone:
+ 161 00f0 0200A0E1 	      MOV     	R0, R2
+ 162 00f4 1EFF2FE1 	      BX 		LR
+ 163              	
+ 164              	
+ 165              	
+ 166              	
+ 167              	
+ 168              	
+ 169              	
+ 170              	
+ 171              	
+ 172              	
+ 173              	
+ 174              	
+ 175              	// Input:
+ 176              	// 	R0 is the base address of inputBuffer
+ 177              	// Output:
+ 178              	//	R0 is the numbers of vowels in the user string input
+ 179              	
+ 180              	
+ 181              	// counting vowels function
+ 182              	
+ 183              	countVowels:
+ 184 00f8 00402DE9 		STMDB 		SP!, {LR}
+ 185 00fc 0010A0E3 		MOV 		R1, #0        
+ 186 0100 0020A0E3 		MOV 		R2, #00  
+ 187 0104 0030A0E1 		MOV 		R3, R0    
+ 188              		 
+ 189              	       
+ 190              	nextCountingVowels:
+ 191 0108 0200D3E7 		LDRB   		R0, [R3, R2]
+ 192 010c 480000EB 		BL 			toUpper    
+ 193 0110 000050E3 		CMP    		R0, #00
+ 194 0114 0D00000A 		BEQ    		countingVowelsDone    
+ 195 0118 012082E2 		ADD 		R2, R2, #1
+ 196 011c 410050E3 		CMP 		R0, #'A'
+ARM GAS  C-StringsProgram.s 			page 5
+
+
+ 197 0120 0800000A 		BEQ   		Vowel
+ 198 0124 450050E3 		CMP 		R0, #'E'
+ 199 0128 0600000A 		BEQ  		Vowel
+ 200 012c 490050E3 		CMP 		R0, #'I'
+ 201 0130 0400000A 		BEQ  		Vowel
+ 202 0134 4F0050E3 		CMP 		R0, #'O'
+ 203 0138 0200000A 		BEQ   		Vowel
+ 204 013c 550050E3 		CMP 		R0, #'U'
+ 205 0140 0000000A 		BEQ   		Vowel
+ 206 0144 EFFFFFEA 		B		nextCountingVowels
+ 207              	Vowel:
+ 208 0148 011081E2 		ADD 		R1, R1, #1
+ 209 014c EDFFFFEA 		B    		nextCountingVowels
+ 210              	         
+ 211              	countingVowelsDone:
+ 212 0150 0100A0E1 	       MOV     	R0, R1
+ 213 0154 0040BDE8 	       LDMIA 	SP!, {LR}
+ 214 0158 1EFF2FE1 	       BX 		LR
+ 215              	     
+ 216              	
+ 217              	
+ 218              	
+ 219              	
+ 220              	
+ 221              	
+ 222              	
+ 223              	
+ 224              	
+ 225              	
+ 226              	
+ 227              	
+ 228              	
+ 229              	
+ 230              	
+ 231              	// Input:
+ 232              	// 	R0 is the base address of inputBuffer
+ 233              	// Output:
+ 234              	//	None
+ 235              	
+ 236              	// first upper case function
+ 237              	
+ 238              	functionUpper:
+ 239 015c 00402DE9 		STMDB 		SP!, { LR}
+ 240 0160 0010A0E1 		MOV 		R1, R0    
+ 241 0164 0020A0E3 		MOV 		R2, #00
+ 242 0168 2030A0E3 		MOV 		R3, #' '
+ 243 016c 0000D1E5 		LDRB 		R0, [R1]
+ 244 0170 2F0000EB 		BL 			toUpper
+ 245 0174 0000C1E5 		STRB 		R0, [R1] 
+ 246              		
+ 247              	upperLoop:
+ 248 0178 0200D1E7 		LDRB 		R0, [R1, R2]
+ 249 017c 000050E3 		CMP 		R0, #00
+ 250 0180 0700000A 		BEQ 		upperDone
+ 251 0184 012082E2 		ADD 		R2, R2, #1
+ 252 0188 200050E3 		CMP 		R0, #' '
+ 253 018c 0000000A 		BEQ  		UpperCase
+ARM GAS  C-StringsProgram.s 			page 6
+
+
+ 254 0190 F8FFFFEA 		B 			upperLoop
+ 255              			
+ 256              	UpperCase:
+ 257 0194 0200D1E7 		LDRB 		R0, [R1, R2]
+ 258 0198 250000EB 		BL 			toUpper
+ 259 019c 0200C1E7 		STRB 		R0, [R1, R2] 
+ 260 01a0 F4FFFFEA 		B 			upperLoop
+ 261              			
+ 262              	upperDone:
+ 263 01a4 0040BDE8 		LDMIA 		SP!, {LR}
+ 264 01a8 1EFF2FE1 		BX 			LR
+ 265              	
+ 266              	
+ 267              	
+ 268              	
+ 269              	
+ 270              	
+ 271              	
+ 272              	
+ 273              	
+ 274              	
+ 275              	
+ 276              	
+ 277              	
+ 278              	
+ 279              	
+ 280              	
+ 281              	
+ 282              	// Input:
+ 283              	// 	R0 is the base address of inputBuffer
+ 284              	// Output:
+ 285              	//	None
+ 286              	
+ 287              	//  shouting function
+ 288              	
+ 289              	shoutingFunction:
+ 290 01ac 00402DE9 		STMDB 		SP!, { LR}
+ 291 01b0 0010A0E1 		MOV 		R1, R0    
+ 292 01b4 0020A0E3 		MOV 		R2, #00
+ 293              			
+ 294              	shoutingLoop:
+ 295 01b8 0200D1E7 		LDRB 		R0, [R1, R2]
+ 296 01bc 000050E3 		CMP 		R0, #00
+ 297 01c0 0300000A 		BEQ 		shoutingDone
+ 298 01c4 1A0000EB 		BL 			toUpper
+ 299 01c8 0200C1E7 		STRB 		R0, [R1, R2] 
+ 300 01cc 012082E2 		ADD 		R2, R2, #1
+ 301 01d0 F8FFFFEA 		B 			shoutingLoop
+ 302              			
+ 303              	shoutingDone:
+ 304 01d4 0040BDE8 		LDMIA 		SP!, {LR}
+ 305 01d8 1EFF2FE1 		BX 			LR
+ 306              	
+ 307              	
+ 308              	
+ 309              	
+ 310              	
+ARM GAS  C-StringsProgram.s 			page 7
+
+
+ 311              	
+ 312              	
+ 313              	
+ 314              	
+ 315              	
+ 316              	
+ 317              	
+ 318              	
+ 319              	
+ 320              	
+ 321              	// Input:
+ 322              	// 	R0 is the base address of inputBuffer
+ 323              	// Output:
+ 324              	//	None
+ 325              	
+ 326              	// remove space function
+ 327              	
+ 328              	removeSpaces:
+ 329 01dc 00402DE9 		STMDB 		SP!, { LR}
+ 330 01e0 6C109FE5 		LDR 		R1, =inputBuffer
+ 331 01e4 68209FE5 		LDR 		R2, =inputBuffer
+ 332              	
+ 333              	spaceRemoverLoop:
+ 334 01e8 0000D1E5 		LDRB 		R0, [R1]
+ 335 01ec 000050E3 		CMP 		R0, #0
+ 336 01f0 0B00000A 		BEQ 		RemovingDone	
+ 337 01f4 200050E3 		CMP 		R0, #' '
+ 338 01f8 0400001A 		BNE 		SPACE
+ 339 01fc 0130D1E5 		LDRB 		R3, [R1, #1]
+ 340 0200 200053E3 		CMP 		R3, #' '
+ 341 0204 0100001A 		BNE 		SPACE
+ 342 0208 011081E2 		ADD 		R1, R1, #1
+ 343 020c F5FFFFEA 		B 			spaceRemoverLoop
+ 344              		
+ 345              	SPACE:
+ 346 0210 0030D1E5 		LDRB 		R3, [R1]
+ 347 0214 0030C2E5 		STRB 		R3, [R2]
+ 348 0218 011081E2 		ADD 		R1, R1, #1
+ 349 021c 012082E2 		ADD 		R2, R2, #1
+ 350 0220 F0FFFFEA 		B 			spaceRemoverLoop
+ 351              			
+ 352              	RemovingDone:
+ 353 0224 0030A0E3 		MOV 		R3, #0
+ 354 0228 0030C2E5 		STRB 		R3, [R2]
+ 355 022c 0040BDE8 		LDMIA 		SP!, {LR}
+ 356 0230 1EFF2FE1 		BX 			LR
+ 357              	
+ 358              	
+ 359              	
+ 360              	
+ 361              	
+ 362              	
+ 363              	// Input:
+ 364              	// 	R0 is the base address of inputBuffer
+ 365              	// Output:
+ 366              	//	R0 is the upper case character
+ 367              	
+ARM GAS  C-StringsProgram.s 			page 8
+
+
+ 368              	
+ 369              	// to upper function
+ 370              	
+ 371              	toUpper:
+ 372 0234 610050E3 	       CMP			R0, #'a'
+ 373 0238 1EFF2F31 	       BXLO 		LR
+ 374 023c 7A0050E3 	       CMP 		R0, #'z'
+ 375 0240 1EFF2F81 	       BXHI 		LR
+ 376 0244 5F0000E2 	       AND 		R0, R0, #0b01011111
+ 377 0248 1EFF2FE1 	       BX 			LR
+ 378              		
+ 379              	
+ 380              	
+ 381              	
+ 382              	
+ 383 024c 00000000 	
+ 383      1C000000 
+ 383      2E000000 
+ 383      7F000000 
+ 383      A2000000 
